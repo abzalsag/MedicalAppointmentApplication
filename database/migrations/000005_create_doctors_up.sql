@@ -14,3 +14,8 @@ CREATE TABLE doctors (
                          created_at       TIMESTAMPTZ   NOT NULL DEFAULT now(),
                          updated_at       TIMESTAMPTZ   NOT NULL DEFAULT now()
 );
+
+
+CREATE INDEX idx_doctors_specialty ON doctors (specialty_id);
+CREATE INDEX idx_doctors_clinic    ON doctors (clinic_id);
+CREATE INDEX idx_doctors_rating    ON doctors (rating DESC);
