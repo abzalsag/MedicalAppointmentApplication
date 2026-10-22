@@ -1,9 +1,3 @@
--- name: ListSpecialties :many
-SELECT id, name, icon FROM specialties ORDER BY name;
-
--- name: ListClinics :many
-SELECT * FROM clinics WHERE city = sqlc.arg('city') ORDER BY name;
-
 -- name: ListDoctors :many
 SELECT
     d.id,
@@ -33,10 +27,10 @@ FROM doctors d
         LIMIT 1
 ) ns ON TRUE
 WHERE d.is_active
-  AND (sqlc.narg('specialty_id')::int  IS NULL OR d.specialty_id = sqlc.narg('specialty_id'))
-  AND (sqlc.narg('clinic_id')::uuid    IS NULL OR d.clinic_id    = sqlc.narg('clinic_id'))
-  AND (sqlc.narg('price_max')::numeric IS NULL OR d.price       <= sqlc.narg('price_max'))
-  AND (sqlc.narg('min_rating')::numeric IS NULL OR d.rating     >= sqlc.narg('min_rating'))
+  AND (sqlc.narg('specialty_id')::int   IS NULL OR d.specialty_id = sqlc.narg('specialty_id'))
+  AND (sqlc.narg('clinic_id')::uuid     IS NULL OR d.clinic_id    = sqlc.narg('clinic_id'))
+  AND (sqlc.narg('price_max')::numeric  IS NULL OR d.price       <= sqlc.narg('price_max'))
+  AND (sqlc.narg('min_rating')::numeric IS NULL OR d.rating      >= sqlc.narg('min_rating'))
   AND (sqlc.narg('q')::text IS NULL OR d.full_name ILIKE '%' || sqlc.narg('q') || '%')
   AND (sqlc.narg('date')::date IS NULL OR EXISTS (
     SELECT 1 FROM slots sl
@@ -69,11 +63,3 @@ WHERE d.id = sqlc.arg('id');
 
 -- name: GetDoctorByUserID :one
 SELECT * FROM doctors WHERE user_id = sqlc.arg('user_id');
-
--- name: ListDoctorReviews :many
-SELECT r.id, r.rating, r.comment, r.created_at, p.full_name AS patient_name
-FROM reviews r
-         JOIN patients p ON p.id = r.patient_id
-WHERE r.doctor_id = sqlc.arg('doctor_id')
-ORDER BY r.created_at DESC
-    LIMIT sqlc.arg('limit_count') OFFSET sqlc.arg('offset_count');
