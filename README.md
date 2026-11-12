@@ -1,8 +1,131 @@
-HCI
-project- Medical Appoinment Application
-Stack: Golang 
-PostgreSQl sqlc golang-migration pgx 
-REST API net/http jwt 
-log/slog cleanev
-redis 
-Websocket
+# Medical Appointment Application
+
+Backend-приложение для управления медицинскими записями, которое позволяет пациентам записываться на приём к врачам, а врачам — управлять своим расписанием.
+
+Проект разрабатывается в рамках учебного курса **Human-Computer Interaction (HCI)**.
+
+## Технологический стек
+
+| Технология | Назначение |
+|---|---|
+| **Golang** | Backend-разработка |
+| **PostgreSQL** | Реляционная база данных |
+| **pgx** | Драйвер и пул подключений к PostgreSQL |
+| **sqlc** | Генерация типобезопасного Go-кода из SQL-запросов |
+| **golang-migrate** | Управление миграциями базы данных |
+| **net/http** | Создание REST API |
+| **JWT** | Аутентификация и авторизация |
+| **log/slog** | Структурированное логирование |
+| **Clean Architecture** | Архитектура приложения |
+| **Redis** | Кэширование и хранение временных данных |
+| **WebSocket** | Обмен данными в реальном времени |
+
+## Основные возможности
+
+- Регистрация и авторизация пользователей
+- Аутентификация на основе JWT
+- Управление профилями пациентов и врачей
+- Запись на приём к врачу
+- Отмена и управление записями
+- Управление расписанием и доступностью врачей
+- Уведомления в реальном времени через WebSocket
+- Кэширование данных с помощью Redis
+- Структурированное логирование
+
+## Архитектура проекта
+
+Проект разрабатывается с использованием принципов **Clean Architecture**, обеспечивающих разделение бизнес-логики, инфраструктуры и внешних зависимостей.
+
+```text
+.
+├── cmd/
+│   └── api/
+├── internal/
+│   ├── domain/
+│   ├── handler/
+│   ├── service/
+│   ├── repository/
+│   ├── middleware/
+│   └── config/
+├── db/
+│   ├── queries/
+│   └── sqlc/
+├── migrations/
+├── pkg/
+├── Dockerfile
+├── docker-compose.yaml
+├── sqlc.yaml
+└── go.mod
+```
+
+## Работа с базой данных
+
+В качестве основной базы данных используется PostgreSQL.
+
+- `pgx` — работа с подключениями к PostgreSQL.
+- `sqlc` — генерация типобезопасного Go-кода на основе SQL-запросов.
+- `golang-migrate` — управление миграциями базы данных.
+
+## Запуск проекта
+
+### Требования
+
+- Go
+- PostgreSQL
+- Redis
+- Docker (опционально)
+
+### Установка
+
+1. Клонирование репозитория:
+
+```bash
+git clone https://github.com/USERNAME/medical-appointment.git
+cd medical-appointment
+```
+
+2. Установка зависимостей:
+
+```bash
+go mod tidy
+```
+
+3. Создание файла `.env`:
+
+```env
+APP_PORT=8080
+DATABASE_URL=postgres://user:password@localhost:5432/medical_db?sslmode=disable
+REDIS_ADDR=localhost:6379
+JWT_SECRET=your-secret-key
+```
+
+4. Применение миграций:
+
+```bash
+migrate -path migrations -database "$DATABASE_URL" up
+```
+
+5. Запуск приложения:
+
+```bash
+go run ./cmd/api
+```
+
+## Цели разработки
+
+- Применение принципов Clean Architecture
+- Разработка масштабируемого REST API
+- Реализация безопасной аутентификации и авторизации
+- Использование sqlc для типобезопасной работы с базой данных
+- Реализация WebSocket для обмена данными в реальном времени
+- Оптимизация производительности с помощью Redis
+
+## Статус проекта
+
+🚧 В процессе разработки.
+
+---
+
+**Дисциплина:** Human-Computer Interaction (HCI)  
+**Backend:** Golang  
+**Database:** PostgreSQL
